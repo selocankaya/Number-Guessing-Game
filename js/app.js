@@ -6,8 +6,10 @@ const guessForm = document.querySelector('form');
 const attempt = document.querySelector('.previous-guess');
 const remainingGuess = document.querySelector('.remaining-guess');
 
+console.log(number);
+
 let guessRemaining = 10;
-let counter = 0;
+var counter = 0;
 
 button.addEventListener('click', (e) => {
   e.preventDefault();
@@ -19,31 +21,36 @@ function restart() {
   location.reload();
 }
 
-function comparision() {
-  if (parseInt(userGuess.value) === number) {
-    warning.textContent = 'Congratulations. You knew ...';
-  }
+function ask() {
+  warning.marginBottom = '100px';
+  warning.style.height = '14vh';
+  warning.style.width = '80%';
+  attempt.textContent = ' ';
+  remainingGuess.textContent = ' ';
+  button.value = 'RESTART';
+  button.addEventListener('click', restart);
+}
 
+function comparision() {
   guessRemaining--;
   counter++;
-  attempt.textContent = 'Previous Guess : ' + counter;
-  remainingGuess.textContent = 'Guess Remaining : ' + guessRemaining;
-
-  if (parseInt(userGuess.value) < number) {
-    warning.textContent = 'Try Higher..';
+  if (parseInt(userGuess.value) === number) {
+    warning.textContent = `Congratulations! You knew it on your ${counter}. try.`;
+    ask();
   } else {
-    warning.textContent = 'Try Lower..';
-  }
+    attempt.textContent = 'Previous Guess : ' + counter;
+    remainingGuess.textContent = 'Guess Remaining : ' + guessRemaining;
 
-  if (guessRemaining == 0) {
-    warning.marginBottom = '100px';
-    warning.style.height = '14vh';
-    warning.style.width = '80%';
-    warning.textContent =
-      "Sorry, You Didn't Know. Press the Button to Start Again.";
-    attempt.textContent = ' ';
-    remainingGuess.textContent = ' ';
-    button.value = 'RESTART';
-    button.addEventListener('click', restart);
+    if (parseInt(userGuess.value) < number) {
+      warning.textContent = 'Higher..';
+    } else {
+      warning.textContent = 'Lower..';
+    }
+
+    if (guessRemaining == 0) {
+      warning.textContent =
+        "Sorry, You Didn't Know. Press the Button to Start Again.";
+      ask();
+    }
   }
 }
